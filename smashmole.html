@@ -1,30 +1,68 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<title>smash a mole</title>
-	<style type="text/css">
-		canvas {
-  display:block;
-  margin:30px auto 0;
-  border:1px dashed #ccc;
-  background:#000;
-}
-	</style>
-	<script type="text/javascript">
-		var cnavas,
-		ctx,
-		width=800,
-		height=600,
-		holes=[],
-		hole,
-		mole;
-		init()
-		{
+<html lang="en">
 
+<!-- 
+	Copyright 2011
+	Mike Chambers
+	mikechambers@gmail.com
+	
+	http://www.mikechambers.com
+	
+	The MIT License
+	Copyright (c) 2011 Mike Chambers
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+	The above copyright notice and this permission notice shall be included in
+	all copies or substantial portions of the Software.
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	THE SOFTWARE.
+-->
+
+<head>
+	<meta charset="utf-8" />
+	
+	<meta name="author" content="Mike Chambers" /> 
+	<meta name="keywords" content="" /> 
+	<meta name="description" content="" /> 
+	<meta name="copyright" content="Mike Chambers" /> 
+	<meta name="robots" content="index,follow" /> 	
+	
+	<title>TITLE</title>
+	
+	
+    <script src="EaselJS/lib/easeljs.js"></script>
+	<script>
+		
+		//initialize function, called when page loads.
+		function init()
+		{
+			var canvas = document.getElementById('canvas')
+        var stage = new createjs.Stage(canvas);
+        var shape = new createjs.Shape();
+shape.graphics.beginFill('#99f');
+shape.graphics.drawRect(0, 0, canvas.width, canvas.height);
+
+shape.graphics.beginFill('#33f');
+shape.graphics.beginStroke('black');
+shape.graphics.drawCircle(canvas.width/2, canvas.height/2, 50);
+
+stage.addChild(shape);
+stage.update();
 		}
 	</script>
+	
+	
 </head>
-<body>
-<canvas id="canvas" width="800" height="600"></canvas>
+<body onload="init()">
+	<canvas id="canvas" width="600" height="300">alternate content</canvas>
 </body>
 </html>
