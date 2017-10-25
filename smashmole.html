@@ -1,68 +1,129 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<!-- 
-	Copyright 2011
-	Mike Chambers
-	mikechambers@gmail.com
-	
-	http://www.mikechambers.com
-	
-	The MIT License
-	Copyright (c) 2011 Mike Chambers
-	Permission is hereby granted, free of charge, to any person obtaining a copy
-	of this software and associated documentation files (the "Software"), to deal
-	in the Software without restriction, including without limitation the rights
-	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	copies of the Software, and to permit persons to whom the Software is
-	furnished to do so, subject to the following conditions:
-	The above copyright notice and this permission notice shall be included in
-	all copies or substantial portions of the Software.
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	THE SOFTWARE.
--->
-
+<html>
 <head>
-	<meta charset="utf-8" />
-	
-	<meta name="author" content="Mike Chambers" /> 
-	<meta name="keywords" content="" /> 
-	<meta name="description" content="" /> 
-	<meta name="copyright" content="Mike Chambers" /> 
-	<meta name="robots" content="index,follow" /> 	
-	
-	<title>TITLE</title>
-	
-	
-    <script src="EaselJS/lib/easeljs.js"></script>
-	<script>
-		
-		//initialize function, called when page loads.
-		function init()
+	<title>whach a mole </title>
+	<style type="text/css">
+		*{-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}
+	</style>
+	<script src="EaselJS/lib/easeljs.js"></script>
+	<script src="TweenJS/lib/tweenjs.js"></script>
+	<script type="text/javascript">
+		var canvas;
+		var stage;
+		var titlebgimg=new Image();
+		var titlebg;
+		var playbtnimage=new Image();
+		var playbtn;
+		var creditsBtnImg=new Image();
+		var creditsBtn;
+		var titleView=new createjs.Container();
+		var creditsViewImg=new Image();
+		var creditsView;
+		var gameBgImg=new Image();
+		var gameBg;
+		var alertBgImg =new Image();
+		var alertBg;
+		var score;
+		var wormImg=new Image();
+		var worm;
+		var lastWorm;
+		var wormx=[80,198,338,70,225,376,142,356];
+		var wormy=[11,51,34,110,136,96,211,186];
+		var centerx=240;
+		var centery=160;
+		var gfxloaded=0;
+		var timesource;
+		var currentworms=0;
+		var wormhit=0;
+		var totalworm=10;
+		function main()
 		{
-			var canvas = document.getElementById('canvas')
-        var stage = new createjs.Stage(canvas);
-        var shape = new createjs.Shape();
-shape.graphics.beginFill('#99f');
-shape.graphics.drawRect(0, 0, canvas.width, canvas.height);
-
-shape.graphics.beginFill('#33f');
-shape.graphics.beginStroke('black');
-shape.graphics.drawCircle(canvas.width/2, canvas.height/2, 50);
-
-stage.addChild(shape);
-stage.update();
+			canvas=document.getElementById('canvas');
+			stage=new createjs.Stage(canvas);
+			stage.mouseEventEnabled=true;
+			titlebgimg.src='titleBg.png';
+			titlebgimg.name='titleBg';
+			titlebgimg.onload=loadGfx;
+			gameBgImg.src='holes.png';
+			gameBgImg.name='gameBg';
+			gameBgImg.onload=loadGfx;
+             playbtnimage.src='playBtn.png';
+             playbtnimage.name='playBtn';
+             playbtnimage.onload=loadGfx;
+            creditsBtnImg.src='creditsBtn.png';
+            creditsBtnImg.name='creditsBtn';
+            creditsBtnImg.onload=loadGfx;
+            creditsViewImg.src='creditsView.png';
+            creditsViewImg.name='creditsView';
+            creditsViewImg.onload=loadGfx;
+            alertBgImg.src='alertBg.png';
+            alertBgImg.name='alertBg';
+            alertBgImg.onload=loadGfx;
+            wormImg.src='worm.png';
+            wormImg.name='worm';
+            wormImg.onload=loadGfx;
+            createjs.Ticker.setFPS(30);
+            createjs.Ticker.addEventListener(stage);
 		}
+		function loadGfx(e)
+		{
+			if(e.target.name='titleBg'){titlebg=new createjs.Bitmap(titlebgimg);}
+			if(e.target.name = 'gameBg'){gameBg = new createjs.Bitmap(gameBgImg);} 
+    if(e.target.name = 'playBtn'){playbtn = new createjs.Bitmap(playbtnimage);} 
+    if(e.target.name = 'creditsBtn'){creditsBtn = new createjs.Bitmap(creditsBtnImg);} 
+    if(e.target.name = 'alertBg'){alertBg = new createjs.Bitmap(alertBgImg);} 
+    gfxloaded++;
+    if(gfxloaded==7)
+    {
+    	addTitleView();
+		}
+    }
+    function addTitleView()
+    {
+    	stage.addChild(gameBg);
+    	playbtn.x=centerx-25;
+    	playbtn.y=centery+35;
+    	creditsBtn.x=centerx-40;
+    	creditsBtn.y=centery+80;
+    	titleView.addChild(titlebg,playbtn,creditsBtn);
+    	stage.addChild(titleView);
+    	startButtonListeners('add');
+    	stage.update();
+    }
+    function startButtonListeners(action) 
+{ 
+    if(action == 'add') 
+    { 
+        //titleView.getChildAt(1).onPress = showGameView; 
+
+        titleView.getChildAt(2).onPress = showCredits; 
+    } 
+    else
+    { 
+        titleView.getChildAt(1).onPress = null; 
+        titleView.getChildAt(2).onPress = null; 
+    } 
+}
+    function showCredits() 
+{ 
+	 console.log("showCredits");
+    playbtn.visible = false; 
+    creditsBtn.visible = false; 
+    creditsView = new Bitmap(creditsViewImg); 
+    stage.addChild(creditsView); 
+    creditsView.x = -203; 
+      
+    Tween.get(creditsView).to({x:0}, 200).call(function(){creditsView.onPress = hideCredits;}); 
+}
+function hideCredits() 
+{ 
+    playbtn.visible = true; 
+    creditsBtn.visible = true; 
+    Tween.get(creditsView).to({x:-203}, 200).call(function(){creditsView.onPress = null; stage.removeChild(creditsView); creditsView = null;}); 
+}
 	</script>
-	
-	
 </head>
-<body onload="init()">
-	<canvas id="canvas" width="600" height="300">alternate content</canvas>
+<body onload="main()">
+<canvas id="canvas" width="480" height="320"> </canvas>
 </body>
 </html>
